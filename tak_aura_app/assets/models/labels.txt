@@ -1,0 +1,17 @@
+1000
+10000
+100000
+2000
+20000
+200000
+500
+5000
+50000
+500000
+animal
+bike
+crosswalk
+hazard-sign
+person
+stairs
+vehicle
