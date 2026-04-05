@@ -1,0 +1,3 @@
+# TakAura
+
+Initial project structure.
