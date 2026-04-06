@@ -4,9 +4,14 @@ import 'package:flutter/material.dart';
 import 'camera_screen.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key, required this.cameras});
+  const SplashScreen({
+    super.key,
+    required this.cameras,
+    this.autoNavigate = true,
+  });
 
   final List<CameraDescription> cameras;
+  final bool autoNavigate;
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -16,7 +21,9 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _goToCamera();
+    if (widget.autoNavigate) {
+      _goToCamera();
+    }
   }
 
   Future<void> _goToCamera() async {
