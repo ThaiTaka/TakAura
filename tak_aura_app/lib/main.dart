@@ -1,7 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
-import 'camera_screen.dart';
+import 'splash_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,7 +53,7 @@ class TakAuraApp extends StatelessWidget {
           ),
         ),
       ),
-      home: CameraScreen(cameras: cameras),
+      home: SplashScreen(cameras: cameras),
     );
   }
 }
