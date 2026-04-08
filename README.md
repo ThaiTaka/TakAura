@@ -8,12 +8,30 @@
 
 TakAura là dự án AI + Flutter để nhận diện tiền trong điều kiện thực tế (cầm tay, góc nghiêng, che khuất nhẹ), huấn luyện bằng YOLOv8 và triển khai trên mobile bằng TensorFlow Lite.
 
+<p align="center">
+	<img src="assets/readme/results.png" alt="TakAura Training Results" width="900"/>
+</p>
+
+<p align="center"><b>AI-first mobile detection pipeline cho tác vụ nhận diện tiền theo thời gian thực.</b></p>
+
 ## ✨ Highlights
 
 - End-to-end pipeline: **Dataset → Train → Export TFLite → Flutter app**
 - Preset augmentation tối ưu cho tiền cầm tay (occlusion, perspective, mixup nhẹ)
 - Script export TFLite có xử lý lỗi thân thiện và tự tìm `best.pt` mới nhất
 - Cấu trúc repo rõ ràng cho cả team AI và mobile
+
+## 🎬 Demo & Results
+
+| Training Curves | Label Distribution |
+|---|---|
+| ![results](assets/readme/results.png) | ![labels](assets/readme/labels.jpg) |
+
+| Confusion Matrix (Normalized) | PR Curve |
+|---|---|
+| ![confusion](assets/readme/confusion_matrix_normalized.png) | ![pr](assets/readme/box_pr_curve.png) |
+
+> Tip: Bạn có thể thay các ảnh này bằng GIF demo app trong `assets/readme/` để README sống động hơn.
 
 ## 🧱 Project Structure
 
@@ -79,6 +97,23 @@ Yêu cầu tối thiểu:
 - `degrees=8.0`, `translate=0.10`, `scale=0.35`
 - `hsv_s=0.75`, `hsv_v=0.45`, `erasing=0.40`
 
+## 📊 Benchmark Snapshot
+
+- Nguồn biểu đồ: `runs/detect/.../results.png` (đã copy vào `assets/readme/` cho GitHub).
+- Mục tiêu hiện tại: cải thiện ổn định detection trong điều kiện cầm tay, ánh sáng và che khuất nhẹ.
+- Quy trình đánh giá khuyến nghị: theo dõi mAP50/mAP50-95, PR curve và confusion matrix sau mỗi lần tinh chỉnh.
+
+## 🧠 Architecture Flow
+
+```text
+Dataset (YOLO format)
+	-> train_takaura.py (YOLOv8 + robust augmentations)
+	-> best.pt
+	-> export_tflite.py (fp16/int8)
+	-> tak_aura_app/assets/models/*.tflite
+	-> Flutter Camera + TFLite Inference + UI Overlay
+```
+
 ## 🛣️ Roadmap
 
 - [x] Huấn luyện YOLOv8 baseline
@@ -86,7 +121,7 @@ Yêu cầu tối thiểu:
 - [x] Camera flow + inference service trong app
 - [ ] Đánh giá thêm mAP/F1 theo từng denomination
 - [ ] Tối ưu latency và memory cho thiết bị tầm trung
-- [ ] Thêm demo GIF/video vào README
+- [ ] Thêm demo GIF/video inference trực tiếp từ app
 
 ## 🤝 Contributing
 
