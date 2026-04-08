@@ -44,10 +44,37 @@ def print_export_error_help(exc: Exception) -> None:
     print("\n[FIX] Lỗi chưa phân loại. Kiểm tra traceback chi tiết phía trên.")
 
 
-def find_latest_tflite(search_root: Path) -> Path | None:
-    candidates = list(search_root.rglob("*.tflite"))
+def find_latest_tflite(search_root: Path, mode: str) -> Path | None:
+    mode_patterns = {
+        "fp16": ["*float16.tflite", "*fp16*.tflite"],
+        "int8": ["*int8*.tflite"],
+    }
+
+    candidates: list[Path] = []
+    for pattern in mode_patterns.get(mode, ["*.tflite"]):
+        candidates.extend(search_root.rglob(pattern))
+
+    if not candidates:
+        candidates = list(search_root.rglob("*.tflite"))
+
     if not candidates:
         return None
+    candidates.sort(key=lambda path: path.stat().st_mtime, reverse=True)
+    return candidates[0]
+
+
+def find_latest_best_weights(preferred: Path) -> Path | None:
+    if preferred.exists():
+        return preferred
+
+    search_root = Path("runs/detect")
+    if not search_root.exists():
+        return None
+
+    candidates = list(search_root.glob("**/weights/best.pt"))
+    if not candidates:
+        return None
+
     candidates.sort(key=lambda path: path.stat().st_mtime, reverse=True)
     return candidates[0]
 
@@ -61,11 +88,18 @@ def main() -> int:
         print_missing_lib_help()
         return 1
 
-    weights_path = args.weights.resolve()
-    if not weights_path.exists():
-        print(f"[ERROR] Không tìm thấy weights: {weights_path}")
+    requested_weights = args.weights.resolve()
+    discovered_weights = find_latest_best_weights(requested_weights)
+    if discovered_weights is None:
+        print(f"[ERROR] Không tìm thấy weights: {requested_weights}")
         print("Hãy train trước hoặc truyền --weights đúng đường dẫn.")
         return 1
+
+    weights_path = discovered_weights
+    if weights_path != requested_weights:
+        print("[WARN] Không thấy weights mặc định, chuyển sang file mới nhất:")
+        print(f"- Requested: {requested_weights}")
+        print(f"- Using: {weights_path}")
 
     output_dir = args.output.resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -89,7 +123,7 @@ def main() -> int:
         print_export_error_help(exc)
         return 1
 
-    exported_tflite = find_latest_tflite(weights_path.parent.parent)
+    exported_tflite = find_latest_tflite(weights_path.parent.parent, args.mode)
     if not exported_tflite:
         print("[ERROR] Export báo thành công nhưng không tìm thấy file .tflite")
         return 1
