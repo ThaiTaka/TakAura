@@ -99,9 +99,20 @@ Yêu cầu tối thiểu:
 
 ## 📊 Benchmark Snapshot
 
-- Nguồn biểu đồ: `runs/detect/.../results.png` (đã copy vào `assets/readme/` cho GitHub).
-- Mục tiêu hiện tại: cải thiện ổn định detection trong điều kiện cầm tay, ánh sáng và che khuất nhẹ.
-- Quy trình đánh giá khuyến nghị: theo dõi mAP50/mAP50-95, PR curve và confusion matrix sau mỗi lần tinh chỉnh.
+- Nguồn metrics chính: `runs/detect/runs/detect/takaura_v1/results.csv` (epoch `50`).
+- Nguồn biểu đồ: `assets/readme/results.png`, `assets/readme/confusion_matrix_normalized.png`, `assets/readme/box_pr_curve.png`.
+
+| KPI | Value |
+|---|---:|
+| Epoch | 50 |
+| Precision | 0.92112 |
+| Recall | 0.86008 |
+| mAP50 | 0.90579 |
+| mAP50-95 | 0.77615 |
+| `best_float16.tflite` size | 5.82 MB |
+| `takaura_fp16.tflite` size | 11.56 MB |
+
+> Ghi chú: số liệu lấy từ run tốt nhất đã lưu trong repo local tại thời điểm tổng hợp.
 
 ## 🧠 Architecture Flow
 
