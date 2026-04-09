@@ -114,6 +114,21 @@ Yêu cầu tối thiểu:
 
 > Ghi chú: số liệu lấy từ run tốt nhất đã lưu trong repo local tại thời điểm tổng hợp.
 
+## ⚠️ Known Issues
+
+- Có nhiều `results.csv` trong workspace; nếu chọn nhầm run thì KPI dễ bị lệch (ví dụ run `train` có metrics bằng `0`).
+- Chưa có benchmark latency chuẩn hóa theo thiết bị (Android tầm trung/cao) trong cùng điều kiện input.
+- Thiếu demo GIF/video inference trực tiếp trong app nên phần showcase chưa phản ánh UX runtime.
+- Một số cảnh báo Git trên Windows (`LF/CRLF`, unreachable loose objects) chưa ảnh hưởng chức năng nhưng nên dọn để workflow sạch hơn.
+
+## 🧪 Next Experiments
+
+- So sánh `fp16` vs `int8` theo 3 tiêu chí: mAP50-95, latency, memory footprint trên cùng thiết bị.
+- Chạy ablation cho augmentation (`mosaic`, `mixup`, `copy_paste`, `erasing`) để tìm preset tối ưu theo từng denomination.
+- Bổ sung tập ảnh khó (blur mạnh, backlight, che khuất > 40%) và đo lại confusion matrix theo lớp.
+- Thiết lập bộ KPI release cố định: `mAP50`, `mAP50-95`, FPS trung bình, P95 latency, model size.
+- Thêm `demo.gif` từ app vào `assets/readme/` để README phản ánh đúng hiệu năng thực tế.
+
 ## 🧠 Architecture Flow
 
 ```text
