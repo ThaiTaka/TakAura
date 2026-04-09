@@ -8,6 +8,8 @@
 
 TakAura là dự án AI + Flutter để nhận diện tiền trong điều kiện thực tế (cầm tay, góc nghiêng, che khuất nhẹ), huấn luyện bằng YOLOv8 và triển khai trên mobile bằng TensorFlow Lite.
 
+📌 Xem tóm tắt tiến độ bản phát hành tại: [`RELEASE_NOTES.md`](./RELEASE_NOTES.md)
+
 <p align="center">
 	<img src="assets/readme/results.png" alt="TakAura Training Results" width="900"/>
 </p>
